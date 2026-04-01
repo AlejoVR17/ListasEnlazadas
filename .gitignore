@@ -1,1 +1,4 @@
-/.vscode
+.idea
+ListasEnlazadas.iml
+target
+out
