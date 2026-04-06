@@ -1,13 +1,11 @@
 package co.uniquindio.estructuras.ejercicio3;
 
-class NodoCancion {
-    String    titulo;
-    String    artista;
-    NodoCancion siguiente;
+class NodoCancion<T> {
+    T   dato;
+    NodoCancion<T> siguiente;
 
-    NodoCancion(String titulo, String artista) {
-        this.titulo   = titulo;
-        this.artista  = artista;
+    NodoCancion(T dato) {
+        this.dato      = dato;
         this.siguiente = null;
     }
 }

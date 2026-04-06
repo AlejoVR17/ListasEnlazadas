@@ -1,9 +1,9 @@
 package co.uniquindio.estructuras.ejercicio3;
 
-class PlaylistCircular {
-    private NodoCancion cola;     // apunta al último nodo insertado
-    private NodoCancion actual;   // nodo que se está reproduciendo ahora
-    private int         tamano;
+class PlaylistCircular<T> {
+    private NodoCancion<T> cola;    // apunta al último nodo
+    private NodoCancion<T> actual;  // nodo reproduciéndose ahora
+    private int             tamano;
 
     PlaylistCircular() {
         cola   = null;
@@ -11,85 +11,82 @@ class PlaylistCircular {
         tamano = 0;
     }
 
-    // Agregar canción al final de la lista
-    void agregar(String titulo, String artista) {
-        NodoCancion nueva = new NodoCancion(titulo, artista);
+    // Agregar elemento al final
+    void agregar(T dato) {
+        NodoCancion<T> nuevo = new NodoCancion<>(dato);
         if (cola == null) {
-            nueva.siguiente = nueva; // apunta a sí misma (lista de 1 elemento)
-            cola   = nueva;
-            actual = nueva;
+            nuevo.siguiente = nuevo;
+            cola   = nuevo;
+            actual = nuevo;
         } else {
-            nueva.siguiente = cola.siguiente; // nueva → primer nodo
-            cola.siguiente  = nueva;          // último nodo → nueva
-            cola = nueva;                     // cola avanza al nuevo nodo
+            nuevo.siguiente = cola.siguiente; // nuevo → primer nodo
+            cola.siguiente  = nuevo;          // último → nuevo
+            cola = nuevo;
         }
         tamano++;
-        System.out.println("Canción agregada: \"" + titulo + "\" - " + artista);
+        System.out.println("Agregado: " + dato);
     }
 
-    // Eliminar una canción por título
-    void eliminar(String titulo) {
-        if (cola == null) {
-            System.out.println("La playlist está vacía."); return;
-        }
-        NodoCancion cabeza  = cola.siguiente;
-        NodoCancion anterior = cola;
-        NodoCancion temp     = cabeza;
+    // Eliminar un elemento por valor
+    void eliminar(T dato) {
+        if (cola == null) { System.out.println("Lista vacía."); return; }
+
+        NodoCancion<T> cabeza   = cola.siguiente;
+        NodoCancion<T> anterior = cola;
+        NodoCancion<T> temp     = cabeza;
 
         do {
-            if (temp.titulo.equalsIgnoreCase(titulo)) {
+            if (temp.dato.equals(dato)) {
                 if (tamano == 1) {
                     cola   = null;
                     actual = null;
                 } else {
                     anterior.siguiente = temp.siguiente;
-                    if (temp == cola)   cola   = anterior; // era el último
-                    if (temp == actual) actual = temp.siguiente; // avanzar si era la actual
+                    if (temp == cola)   cola   = anterior;
+                    if (temp == actual) actual = temp.siguiente;
                 }
                 tamano--;
-                System.out.println("Eliminada: \"" + titulo + "\"");
+                System.out.println("Eliminado: " + dato);
                 return;
             }
             anterior = temp;
             temp     = temp.siguiente;
         } while (temp != cabeza);
 
-        System.out.println("Canción no encontrada: \"" + titulo + "\"");
+        System.out.println("Elemento no encontrado: " + dato);
     }
 
     // Avanzar a la siguiente canción (circularmente)
     void siguiente() {
-        if (actual == null) {
-            System.out.println("Playlist vacía."); return;
-        }
+        if (actual == null) { System.out.println("Lista vacía."); return; }
         actual = actual.siguiente;
-        System.out.println("Reproduciendo: \"" + actual.titulo + "\" - " + actual.artista);
+        System.out.println("Reproduciendo: " + actual.dato);
     }
 
-    // Buscar una canción por título
-    void buscar(String titulo) {
-        if (cola == null) { System.out.println("Playlist vacía."); return; }
-        NodoCancion cabeza = cola.siguiente;
-        NodoCancion temp   = cabeza;
+    // Buscar un elemento
+    void buscar(T dato) {
+        if (cola == null) { System.out.println("Lista vacía."); return; }
+        NodoCancion<T> cabeza = cola.siguiente;
+        NodoCancion<T> temp   = cabeza;
         do {
-            if (temp.titulo.equalsIgnoreCase(titulo)) {
-                System.out.println("Encontrada: \"" + temp.titulo + "\" - " + temp.artista);
+            if (temp.dato.equals(dato)) {
+                System.out.println("Encontrado: " + temp.dato);
                 return;
             }
             temp = temp.siguiente;
         } while (temp != cabeza);
-        System.out.println("Canción no encontrada: \"" + titulo + "\"");
+        System.out.println("No encontrado: " + dato);
     }
 
-    // Mostrar todas las canciones
+    // Mostrar toda la lista
     void mostrar() {
-        if (cola == null) { System.out.println("Playlist vacía."); return; }
-        NodoCancion cabeza = cola.siguiente;
-        NodoCancion temp   = cabeza;
+        if (cola == null) { System.out.println("Lista vacía."); return; }
+        NodoCancion<T> cabeza = cola.siguiente;
+        NodoCancion<T> temp   = cabeza;
         System.out.print("Playlist [" + tamano + "]: ");
         do {
             if (temp == actual) System.out.print("♪");
-            System.out.print("[" + temp.titulo + "]");
+            System.out.print("[" + temp.dato + "]");
             temp = temp.siguiente;
             if (temp != cabeza) System.out.print(" → ");
         } while (temp != cabeza);

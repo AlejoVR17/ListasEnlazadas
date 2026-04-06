@@ -2,11 +2,11 @@ package co.uniquindio.estructuras.ejercicio3;
 
 public class Escenario3Musica {
     public static void main(String[] args) {
-        PlaylistCircular pl = new PlaylistCircular();
+        PlaylistCircular<String> pl = new PlaylistCircular();
 
-        pl.agregar("Bohemian Rhapsody", "Queen");
-        pl.agregar("Hotel California",  "Eagles");
-        pl.agregar("Stairway to Heaven","Led Zeppelin");
+        pl.agregar("Bohemian Rhapsody");
+        pl.agregar("Hotel California");
+        pl.agregar("Stairway to Heaven");
         pl.mostrar();
 
         pl.siguiente(); // Hotel California
