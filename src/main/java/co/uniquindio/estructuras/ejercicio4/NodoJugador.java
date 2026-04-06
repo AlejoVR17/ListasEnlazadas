@@ -1,14 +1,12 @@
 package co.uniquindio.estructuras.ejercicio4;
 
-class NodoJugador {
-    String      nombre;
-    int         puntos;
-    NodoJugador siguiente;
-    NodoJugador anterior;
+class NodoJugador<T> {
+    T                    dato;
+    NodoJugador<T> siguiente;
+    NodoJugador<T> anterior;
 
-    NodoJugador(String nombre) {
-        this.nombre    = nombre;
-        this.puntos    = 0;
+    NodoJugador(T dato) {
+        this.dato      = dato;
         this.siguiente = null;
         this.anterior  = null;
     }

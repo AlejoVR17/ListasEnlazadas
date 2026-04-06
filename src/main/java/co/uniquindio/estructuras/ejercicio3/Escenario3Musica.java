@@ -9,9 +9,9 @@ public class Escenario3Musica {
         pl.agregar("Stairway to Heaven");
         pl.mostrar();
 
-        pl.siguiente(); // Hotel California
-        pl.siguiente(); // Stairway to Heaven
-        pl.siguiente(); // vuelve a Bohemian Rhapsody (circularidad)
+        pl.siguiente();
+        pl.siguiente();
+        pl.siguiente();
 
         pl.eliminar("Hotel California");
         pl.mostrar();

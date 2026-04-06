@@ -10,18 +10,17 @@ public class Escenario4Juego {
         juego.agregar("Marcos");
         juego.mostrar();
 
-        juego.consultarVecinos();
 
-        juego.siguienteTurno(); // Carlos
-        juego.siguienteTurno(); // Elena
-        juego.siguienteTurno(); // Marcos
-        juego.siguienteTurno(); // Sofía (circular: regresa al inicio)
-        juego.mostrar();
+        juego.siguienteTurno();
+        juego.siguienteTurno();
+        juego.siguienteTurno();
+        juego.siguienteTurno();
+        juego.turnoAnterior();
 
         juego.eliminar("Elena");
         juego.mostrar();
 
-        juego.buscar("Marcos");
-        juego.consultarVecinos();
+        juego.buscar("Carlos");
+        juego.buscar("Elena");
     }
 }

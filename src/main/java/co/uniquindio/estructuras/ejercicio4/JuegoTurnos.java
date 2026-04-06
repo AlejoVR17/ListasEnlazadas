@@ -1,106 +1,95 @@
 package co.uniquindio.estructuras.ejercicio4;
 
-class JuegoTurnos {
-    private NodoJugador turnoActual; // jugador cuyo turno es ahora
-    private int         numJugadores;
+class JuegoTurnos<T> {
+    private NodoJugador<T> actual;
+    private int                  tamano;
 
     JuegoTurnos() {
-        turnoActual   = null;
-        numJugadores  = 0;
+        actual = null;
+        tamano = 0;
     }
 
-    // Agregar un nuevo jugador a la mesa
-    void agregar(String nombre) {
-        NodoJugador nuevo = new NodoJugador(nombre);
-        if (turnoActual == null) {
+    // Agregar jugador a la mesa
+    void agregar(T dato) {
+        NodoJugador<T> nuevo = new NodoJugador<>(dato);
+        if (actual == null) {
             nuevo.siguiente = nuevo;
             nuevo.anterior  = nuevo;
-            turnoActual     = nuevo;
+            actual = nuevo;
         } else {
-            // Insertar antes del turno actual (al "final" de la lista circular)
-            NodoJugador ultimo = turnoActual.anterior;
-            ultimo.siguiente  = nuevo;
-            nuevo.anterior    = ultimo;
-            nuevo.siguiente   = turnoActual;
-            turnoActual.anterior = nuevo;
+            NodoJugador<T> ultimo = actual.anterior;
+            ultimo.siguiente = nuevo;
+            nuevo.anterior   = ultimo;
+            nuevo.siguiente  = actual;
+            actual.anterior  = nuevo;
         }
-        numJugadores++;
-        System.out.println("Jugador agregado: " + nombre);
+        tamano++;
+        System.out.println("Jugador agregado: " + dato);
     }
 
-    // Expulsar a un jugador de la partida
-    void eliminar(String nombre) {
-        if (turnoActual == null) {
-            System.out.println("No hay jugadores."); return;
-        }
-        NodoJugador inicio = turnoActual;
-        NodoJugador temp   = inicio;
+    // Expulsar un jugador por valor
+    void eliminar(T dato) {
+        if (actual == null) { System.out.println("No hay jugadores."); return; }
+        NodoJugador<T> inicio = actual;
+        NodoJugador<T> temp   = inicio;
         do {
-            if (temp.nombre.equalsIgnoreCase(nombre)) {
-                if (numJugadores == 1) {
-                    turnoActual = null;
+            if (temp.dato.equals(dato)) {
+                if (tamano == 1) {
+                    actual = null;
                 } else {
                     temp.anterior.siguiente = temp.siguiente;
                     temp.siguiente.anterior = temp.anterior;
-                    if (temp == turnoActual) turnoActual = temp.siguiente;
+                    if (temp == actual) actual = temp.siguiente;
                 }
-                numJugadores--;
-                System.out.println("Jugador expulsado: " + nombre);
+                tamano--;
+                System.out.println("Jugador expulsado: " + dato);
                 return;
             }
             temp = temp.siguiente;
         } while (temp != inicio);
-        System.out.println("Jugador no encontrado: " + nombre);
+        System.out.println("Jugador no encontrado: " + dato);
     }
 
-    // Pasar el turno al siguiente jugador
+    // Avanzar al siguiente turno
     void siguienteTurno() {
-        if (turnoActual == null) { System.out.println("No hay jugadores."); return; }
-        turnoActual = turnoActual.siguiente;
-        System.out.println("Turno de: " + turnoActual.nombre);
+        if (actual == null) { System.out.println("No hay jugadores."); return; }
+        actual = actual.siguiente;
+        System.out.println("Turno de: " + actual.dato);
     }
 
-    // Pasar el turno al jugador anterior (si el juego lo permite)
+    // Retroceder al turno anterior
     void turnoAnterior() {
-        if (turnoActual == null) { System.out.println("No hay jugadores."); return; }
-        turnoActual = turnoActual.anterior;
-        System.out.println("Turno de (retroceso): " + turnoActual.nombre);
+        if (actual == null) { System.out.println("No hay jugadores."); return; }
+        actual = actual.anterior;
+        System.out.println("Turno de (retroceso): " + actual.dato);
     }
 
-    // Consultar quién juega antes y después del turno actual
-    void consultarVecinos() {
-        if (turnoActual == null) { System.out.println("No hay jugadores."); return; }
-        System.out.println("Jugó antes : " + turnoActual.anterior.nombre);
-        System.out.println("Juega ahora: " + turnoActual.nombre);
-        System.out.println("Juega luego: " + turnoActual.siguiente.nombre);
-    }
-
-    // Buscar un jugador por nombre
-    void buscar(String nombre) {
-        if (turnoActual == null) { System.out.println("No hay jugadores."); return; }
-        NodoJugador inicio = turnoActual;
-        NodoJugador temp   = inicio;
+    // Buscar un jugador por valor
+    void buscar(T dato) {
+        if (actual == null) { System.out.println("No hay jugadores."); return; }
+        NodoJugador<T> inicio = actual;
+        NodoJugador<T> temp   = inicio;
         do {
-            if (temp.nombre.equalsIgnoreCase(nombre)) {
-                System.out.println("Encontrado: " + temp.nombre + " | puntos: " + temp.puntos);
+            if (temp.dato.equals(dato)) {
+                System.out.println("Encontrado: " + temp.dato);
                 return;
             }
             temp = temp.siguiente;
         } while (temp != inicio);
-        System.out.println("Jugador no encontrado: " + nombre);
+        System.out.println("No encontrado: " + dato);
     }
 
     // Mostrar todos los jugadores en orden de turno
     void mostrar() {
-        if (turnoActual == null) { System.out.println("Sin jugadores."); return; }
-        NodoJugador temp = turnoActual;
-        System.out.print("Mesa (" + numJugadores + " jugadores): ");
+        if (actual == null) { System.out.println("Sin jugadores."); return; }
+        NodoJugador<T> temp = actual;
+        System.out.print("Mesa [" + tamano + "]: ");
         do {
-            if (temp == turnoActual) System.out.print("★");
-            System.out.print("[" + temp.nombre + "]");
+            if (temp == actual) System.out.print("★");
+            System.out.print("[" + temp.dato + "]");
             temp = temp.siguiente;
-            if (temp != turnoActual) System.out.print(" ↔ ");
-        } while (temp != turnoActual);
-        System.out.println(" ↻ (circular)");
+            if (temp != actual) System.out.print(" ↔ ");
+        } while (temp != actual);
+        System.out.println(" ↻");
     }
 }
